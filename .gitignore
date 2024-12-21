@@ -1,0 +1,32 @@
+﻿# Build Folders
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build Output
+*.exe
+*.dll
+*.app
+*.dmg
+*.pdb
+*.ipa
+
+# Logs
+*.log
+
+# User-specific files
+*.swp
+*.tmp
+*.userprefs
+
+# Package Files
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
