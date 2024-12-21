@@ -9,7 +9,7 @@
         <GraphicsView
         x:Name="Wheel"
         WidthRequest="1000"
-        HeightRequest="600" />
+        HeightRequest="1000" />
 
         <Button
             x:Name="AddButton"

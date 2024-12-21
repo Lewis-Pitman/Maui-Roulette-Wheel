@@ -11,7 +11,8 @@ namespace Spinning_Wheel
     internal class SectorDrawable : IDrawable
     {
         private float wheelSize = 250;
-        private int numberOfSectors = 186; //Max this will ever go to is 186
+        private int numberOfSectors = 3; //Max this will ever go to is 186
+        //Needs to be edge case for 1, 2, 3 sectors -> They don't appear properly
 
         private Color[] colorList = { Colors.Green, Colors.Red, Colors.Yellow, Colors.Blue};
 
@@ -22,6 +23,18 @@ namespace Spinning_Wheel
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
+
+
+            if (OperatingSystem.IsWindows())
+            {
+                //slap a message saying clippath isnt supported
+            }
+            else
+            {
+                PathF clipPath = new PathF();
+                clipPath.AppendCircle(dirtyRect.Center.X, dirtyRect.Center.Y, wheelSize);
+                canvas.ClipPath(clipPath);
+            }
 
             //Drawing sectors
             int colourCount = 0;
@@ -38,16 +51,19 @@ namespace Spinning_Wheel
                 path.MoveTo(dirtyRect.Center.X, dirtyRect.Center.Y);
 
                 //First line
-                float x1 = (float)(dirtyRect.Center.X + wheelSize * Math.Cos(Math.PI * (anglePerSector * i) / 180.0));
-                float y1 = (float)(dirtyRect.Center.Y + wheelSize * Math.Sin(Math.PI * (anglePerSector * i) / 180.0));
+                float x1 = (float)(dirtyRect.Center.X + wheelSize * 1.5f * Math.Cos(Math.PI * (anglePerSector * i) / 180.0));
+                float y1 = (float)(dirtyRect.Center.Y + wheelSize * 1.5f * Math.Sin(Math.PI * (anglePerSector * i) / 180.0));
                 path.LineTo(x1, y1);
 
                 path.MoveTo(dirtyRect.Center.X, dirtyRect.Center.Y);
                 
                 //Second line
-                float x2 = (float)(dirtyRect.Center.X + wheelSize * Math.Cos(Math.PI * (anglePerSector * (i + 1)) / 180.0));
-                float y2 = (float)(dirtyRect.Center.Y + wheelSize * Math.Sin(Math.PI * (anglePerSector * (i + 1)) / 180.0));
+                float x2 = (float)(dirtyRect.Center.X + wheelSize * 1.5f * Math.Cos(Math.PI * (anglePerSector * (i + 1)) / 180.0));
+                float y2 = (float)(dirtyRect.Center.Y + wheelSize * 1.5f * Math.Sin(Math.PI * (anglePerSector * (i + 1)) / 180.0));
                 path.LineTo(x2, y2);
+
+                path.LineTo(x1, y1);
+                canvas.FillPath(path);
 
                 //Explanation
                 //Math.PI * (anglePerSector * (i + 1)) / 180.0) Converts the angle we want to turn to from degrees to radians
@@ -72,7 +88,7 @@ namespace Spinning_Wheel
                     canvas.Rotate(textAngle);
 
                     canvas.FontColor = Colors.White;
-                    canvas.FontSize = numberOfSectors <= 20 ? 100 / numberOfSectors : numberOfSectors / 2.5f;
+                    canvas.FontSize = numberOfSectors <= 20 ? 150 / numberOfSectors : numberOfSectors / 3f; //Effort to keep text readable
 
                     canvas.DrawString(text, 0, 0, HorizontalAlignment.Center);
                     canvas.RestoreState();
@@ -85,11 +101,10 @@ namespace Spinning_Wheel
             canvas.FillColor = Colors.White;
             canvas.FillCircle(dirtyRect.Center.X, dirtyRect.Center.Y, wheelSize / 4);
 
-            //White border
-            canvas.StrokeColor = Colors.White;
-            canvas.StrokeSize = 8;
+            //Border
+            canvas.StrokeColor = Colors.Gray;
+            canvas.StrokeSize = wheelSize / 10;
             canvas.DrawEllipse(dirtyRect.Center.X - wheelSize, dirtyRect.Center.Y - wheelSize, wheelSize * 2, wheelSize * 2);
-
         }
     }
 }
