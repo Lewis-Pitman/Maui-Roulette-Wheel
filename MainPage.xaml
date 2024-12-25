@@ -29,7 +29,54 @@
             Clicked="RotateClicked"
             />
 
-    </VerticalStackLayout>
+            <Frame CornerRadius="25" Padding="0" BackgroundColor="#262626" BorderColor="#000000">
+                <Frame.Content Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <!--Entry field-->
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Entry Grid.Column="0" 
+                                   TextColor="White" 
+                                   BackgroundColor="#4c4c4c" 
+                                   VerticalOptions="FillAndExpand" 
+                                   HorizontalOptions="FillAndExpand" 
+                                   />
+                            <Button Grid.Column="1" BackgroundColor="Green" ImageSource="plus.png" CornerRadius="0" />
+                        </Grid>
+
+                        <!--List of already made items-->
+                        <ListView Grid.Row="1">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="3*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!--Bindings need to be added (Text & OnClick)-->
+                                            <Label Grid.Column="0" TextColor="White" VerticalOptions="Center" />
+                                            <Button Grid.Column="1" BackgroundColor="Red" ImageSource="minus.png" />
+                                        </Grid>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </Frame.Content>
+            </Frame>
+        
+        </VerticalStackLayout>
     </ScrollView>
 
 </ContentPage>

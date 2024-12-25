@@ -23,5 +23,4 @@
             Wheel.Rotation = random.Next(360);
         }
     }
-
 }
