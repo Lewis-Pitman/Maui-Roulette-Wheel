@@ -2,13 +2,11 @@
 {
     public partial class MainPage : ContentPage
     {
-        private SectorDrawable sector;
-        private MainPageViewModel mainPageViewModel = new();
+        private MainPageViewModel mainPageViewModel;
         public MainPage()
         {
             InitializeComponent();
-            sector = new SectorDrawable();
-            Wheel.Drawable = sector;
+            mainPageViewModel = new MainPageViewModel(Wheel);
             BindingContext = mainPageViewModel;
         }
     }

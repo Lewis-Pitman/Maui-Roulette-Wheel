@@ -21,7 +21,9 @@ namespace Spinning_Wheel
         #endregion
 
         #region Variables
-        private ObservableCollection<Item> items;
+        private GraphicsView wheel;
+
+        private ObservableCollection<Item> items = new ObservableCollection<Item>();
         public ObservableCollection<Item> Items
         {
             get => items;
@@ -35,7 +37,32 @@ namespace Spinning_Wheel
             }
         }
 
-        private string entryText;
+        private WheelDrawable wheelDrawable;
+        public WheelDrawable WheelDrawable
+        {
+            get => wheelDrawable;
+            set
+            {
+                wheelDrawable = value;
+                OnPropertyChanged(nameof(WheelDrawable));
+                wheel.Invalidate();
+            }
+
+        }
+
+        private string resultText = "Spin the wheel!";
+        public string ResultText
+        {
+            get => resultText;
+            set
+            {
+                resultText = value;
+                OnPropertyChanged(nameof(ResultText));
+            }
+
+        }
+
+        private string entryText = string.Empty;
         public string EntryText
         {
             get => entryText;
@@ -53,12 +80,18 @@ namespace Spinning_Wheel
         #endregion
 
         #region Constructor
-        public MainPageViewModel()
+        public MainPageViewModel(GraphicsView _wheel)
         {
+            //Buttons
             SpinCommand = new Command(SpinWheel);
             AddItemCommand = new Command(AddItem);
             RemoveItemCommand = new Command<Item>(RemoveItem);
-            Items = new ObservableCollection<Item>();
+
+            //UI
+            wheelDrawable = new WheelDrawable(Items);
+
+            //Variables
+            wheel = _wheel;
         }
         #endregion
 
@@ -72,11 +105,13 @@ namespace Spinning_Wheel
         {
             Items.Add(new Item { Title = EntryText });
             EntryText = string.Empty;
+            WheelDrawable = new WheelDrawable(Items);
         }
 
         private void RemoveItem(Item item)
         {
             Items.Remove(item);
+            WheelDrawable = new WheelDrawable(Items);
         }
         #endregion
     }

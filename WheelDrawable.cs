@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -8,16 +9,16 @@ using System.Threading.Tasks;
 namespace Spinning_Wheel
 {
 
-    internal class SectorDrawable : IDrawable
+    internal class WheelDrawable : IDrawable
     {
         private float wheelSize = 200;
-        private int numberOfSectors = 3;
+        private ObservableCollection<Item> items;
 
         private Color[] colorList = { Colors.Green, Colors.Red, Colors.Yellow, Colors.Blue}; // --> Change to odd no. of colours to prevent 2 next to each other
 
-        public void changeNumberOfSectors(int _numberOfSectors)
+        public WheelDrawable(ObservableCollection<Item> _items)
         {
-            numberOfSectors = _numberOfSectors;
+            items = _items ?? new ObservableCollection<Item>();
         }
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
@@ -26,7 +27,7 @@ namespace Spinning_Wheel
             #region Clip path
             if (OperatingSystem.IsWindows())
             {
-                //slap a message saying clippath isnt supported
+                //Add a message..?
             }
             else
             {
@@ -38,14 +39,14 @@ namespace Spinning_Wheel
 
             #region Drawing sectors
             int colourCount = 0;
-            float anglePerSector = 360f / numberOfSectors;
+            float anglePerSector = 360f / items.Count();
 
             #region Edge cases
-            if (numberOfSectors <= 3)
+            if (items.Count() <= 3)
             {
                 //Edge cases (Where no. of sectors is 0, 1, 2, or 3)
 
-                switch (numberOfSectors)
+                switch (items.Count())
                 {
                     case 1:
                         //Background
@@ -55,7 +56,7 @@ namespace Spinning_Wheel
                         //Text
                         canvas.FontColor = Colors.White;
                         canvas.FontSize = 30;
-                        canvas.DrawString("!-Temporary-!", dirtyRect.Center.X - (wheelSize / 2), dirtyRect.Center.Y, HorizontalAlignment.Center);
+                        canvas.DrawString(items[0].Title, dirtyRect.Center.X - (wheelSize / 2), dirtyRect.Center.Y, HorizontalAlignment.Center);
 
                         //White centre
                         canvas.FillColor = Colors.White;
@@ -77,7 +78,7 @@ namespace Spinning_Wheel
                         //Text
                         canvas.FontColor = Colors.White;
                         canvas.FontSize = 30;
-                        canvas.DrawString("!-Temporary-!", dirtyRect.Center.X - (wheelSize / 2), dirtyRect.Center.Y, HorizontalAlignment.Center);
+                        canvas.DrawString(items[0].Title, dirtyRect.Center.X - (wheelSize / 2), dirtyRect.Center.Y, HorizontalAlignment.Center);
 
                         //Sector 2
                         PathF rectPath = new PathF();
@@ -97,7 +98,7 @@ namespace Spinning_Wheel
                         //Text
                         canvas.FontColor = Colors.White;
                         canvas.FontSize = 30;
-                        canvas.DrawString("!-Temporary2-!", dirtyRect.Center.X + (wheelSize / 2), dirtyRect.Center.Y, HorizontalAlignment.Center);
+                        canvas.DrawString(items[1].Title, dirtyRect.Center.X + (wheelSize / 2), dirtyRect.Center.Y, HorizontalAlignment.Center);
 
                         //White centre
                         canvas.FillColor = Colors.White;
@@ -145,9 +146,9 @@ namespace Spinning_Wheel
                             canvas.DrawPath(path);
 
                             //Text
-                            if (numberOfSectors <= 30)
+                            if (items.Count() <= 30)
                             {
-                                string text = $"Sector {i + 1}";
+                                string text = items[i].Title;
 
                                 float textAngle = anglePerSector * (i + 0.5f);
                                 //(The angle in the middle of the sector, e.g. for a 90 degree sector the middle would be 45 degrees)
@@ -161,7 +162,7 @@ namespace Spinning_Wheel
                                 canvas.Rotate(textAngle);
 
                                 canvas.FontColor = Colors.White;
-                                canvas.FontSize = numberOfSectors <= 20 ? 150 / numberOfSectors : numberOfSectors / 3f; //Effort to keep text readable
+                                canvas.FontSize = items.Count() <= 20 ? 150 / items.Count() : items.Count() / 3f; //Effort to keep text readable
 
                                 canvas.DrawString(text, 0, 0, HorizontalAlignment.Center);
                                 canvas.RestoreState();
@@ -202,7 +203,7 @@ namespace Spinning_Wheel
             #endregion
             else
             {
-                for (int i = 0; i < numberOfSectors; i++)
+                for (int i = 0; i < items.Count(); i++)
                 {
                     PathF path = new PathF();
 
@@ -234,9 +235,9 @@ namespace Spinning_Wheel
                     canvas.DrawPath(path);
 
                     //Text
-                    if (numberOfSectors <= 30)
+                    if (items.Count() <= 30)
                     {
-                        string text = $"Sector {i + 1}";
+                        string text = items[i].Title;
 
                         float textAngle = anglePerSector * (i + 0.5f);
                         //(The angle in the middle of the sector, e.g. for a 90 degree sector the middle would be 45 degrees)
@@ -250,7 +251,7 @@ namespace Spinning_Wheel
                         canvas.Rotate(textAngle);
 
                         canvas.FontColor = Colors.White;
-                        canvas.FontSize = numberOfSectors <= 20 ? 150 / numberOfSectors : numberOfSectors / 3f; //Effort to keep text readable
+                        canvas.FontSize = items.Count() <= 20 ? 150 / items.Count() : items.Count() / 3f; //Effort to keep text readable
 
                         canvas.DrawString(text, 0, 0, HorizontalAlignment.Center);
                         canvas.RestoreState();

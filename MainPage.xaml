@@ -7,11 +7,20 @@
     <ScrollView>
     <VerticalStackLayout Spacing="20">
         
+        <Label
+            FontSize="Title"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Text="{Binding ResultText}"
+            />
+        
         <GraphicsView
-        x:Name="Wheel"
-        WidthRequest="750"
-        HeightRequest="500" />
-
+            x:Name="Wheel"
+            WidthRequest="750"
+            HeightRequest="500"
+            Drawable="{Binding WheelDrawable}"
+        />
+        
         <Button
             x:Name="SpinButton"
             Text="Spin"
@@ -19,6 +28,8 @@
             HeightRequest="150"
             FontAttributes="Bold"
             FontSize="Header"
+            Padding="20"
+            CornerRadius="10"
             Command="{Binding SpinCommand}"
             />
 
