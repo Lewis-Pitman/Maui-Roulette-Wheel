@@ -10,7 +10,7 @@ namespace Spinning_Wheel
 
     internal class SectorDrawable : IDrawable
     {
-        private float wheelSize = 250;
+        private float wheelSize = 200;
         private int numberOfSectors = 3;
 
         private Color[] colorList = { Colors.Green, Colors.Red, Colors.Yellow, Colors.Blue}; // --> Change to odd no. of colours to prevent 2 next to each other

@@ -1,80 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Spinning_Wheel.MainPage">
+             x:Class="Spinning_Wheel.MainPage"
+             Shell.NavBarIsVisible="False">
 
     <ScrollView>
-    <VerticalStackLayout Spacing="50">
+    <VerticalStackLayout Spacing="20">
         
         <GraphicsView
         x:Name="Wheel"
-        WidthRequest="1000"
-        HeightRequest="1000" />
+        WidthRequest="750"
+        HeightRequest="500" />
 
         <Button
-            x:Name="AddButton"
-            Text="Random Sectors"
+            x:Name="SpinButton"
+            Text="Spin"
             WidthRequest="500"
             HeightRequest="150"
+            FontAttributes="Bold"
             FontSize="Header"
-            Clicked="RandomClicked"
-            />
-        
-        <Button
-            x:Name="RemoveButton"
-            Text="Random Rotation"
-            WidthRequest="500"
-            HeightRequest="150"
-            FontSize="Header"
-            Clicked="RotateClicked"
+            Command="{Binding SpinCommand}"
             />
 
-            <Frame CornerRadius="25" Padding="0" BackgroundColor="#262626" BorderColor="#000000">
-                <Frame.Content Padding="20">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
+            <!--Entry field-->
+            <Grid Grid.Row="0" ColumnSpacing="10" Padding="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-                        <!--Entry field-->
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                <Entry Grid.Column="0" 
+                       VerticalOptions="FillAndExpand" 
+                       HorizontalOptions="FillAndExpand" 
+                       Text="{Binding EntryText}"
+                       />
+                
+                <Button Grid.Column="1" BackgroundColor="Green" ImageSource="plus.png" CornerRadius="10" Command="{Binding AddItemCommand}"/>
+            </Grid>
 
-                            <Entry Grid.Column="0" 
-                                   TextColor="White" 
-                                   BackgroundColor="#4c4c4c" 
-                                   VerticalOptions="FillAndExpand" 
-                                   HorizontalOptions="FillAndExpand" 
-                                   />
-                            <Button Grid.Column="1" BackgroundColor="Green" ImageSource="plus.png" CornerRadius="0" />
-                        </Grid>
+            <!--List of already made items-->
+            <ListView Grid.Row="1" ItemsSource="{Binding Items}" SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
 
-                        <!--List of already made items-->
-                        <ListView Grid.Row="1">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <Grid Grid.Row="0">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="3*" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="0" ColumnSpacing="10" Padding="0" MinimumHeightRequest="20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
 
-                                            <!--Bindings need to be added (Text & OnClick)-->
-                                            <Label Grid.Column="0" TextColor="White" VerticalOptions="Center" />
-                                            <Button Grid.Column="1" BackgroundColor="Red" ImageSource="minus.png" />
-                                        </Grid>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </Grid>
-                </Frame.Content>
-            </Frame>
+                                <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" Text="{Binding Title}" />
+                                <Button Grid.Row="0"
+                                        Grid.Column="1" 
+                                        BackgroundColor="Red" 
+                                        ImageSource="minus.png" 
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="FillAndExpand"
+                                        CornerRadius="10" 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RemoveItemCommand}" 
+                                        CommandParameter="{Binding .}" 
+                                        />
+                            </Grid>
+                            
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         
         </VerticalStackLayout>
     </ScrollView>
