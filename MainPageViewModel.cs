@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -22,6 +23,11 @@ namespace Spinning_Wheel
 
         #region Variables
         private GraphicsView wheel;
+        private Page page;
+
+        private WheelSpin wheelSpin;
+        private bool isSpinning;
+        private CancellationTokenSource cancellationTokenSource;
 
         private ObservableCollection<Item> items = new ObservableCollection<Item>();
         public ObservableCollection<Item> Items
@@ -50,18 +56,6 @@ namespace Spinning_Wheel
 
         }
 
-        private string resultText = "Spin the wheel!";
-        public string ResultText
-        {
-            get => resultText;
-            set
-            {
-                resultText = value;
-                OnPropertyChanged(nameof(ResultText));
-            }
-
-        }
-
         private string entryText = string.Empty;
         public string EntryText
         {
@@ -80,7 +74,7 @@ namespace Spinning_Wheel
         #endregion
 
         #region Constructor
-        public MainPageViewModel(GraphicsView _wheel)
+        public MainPageViewModel(GraphicsView _wheel, Page _page)
         {
             //Buttons
             SpinCommand = new Command(SpinWheel);
@@ -92,20 +86,55 @@ namespace Spinning_Wheel
 
             //Variables
             wheel = _wheel;
+            page = _page;
+            wheelSpin = new(wheel);
+            cancellationTokenSource = new CancellationTokenSource();
         }
         #endregion
 
         #region Functions
-        private void SpinWheel()
+        private async void SpinWheel()
         {
-            // Spin logic
+            if (Items.Count() > 0 && !isSpinning)
+            {
+                isSpinning = true;
+
+                await wheelSpin.SpinAsync();
+
+                int winnerIndex = (int)Math.Floor(wheel.Rotation) / ((int)360f / items.Count());
+                //Integer division of the current rotation by the angle per sector will return the winning item's index in Items[]
+
+                await Task.Delay(1000); //Delay one second
+
+                bool removeItem = await page.DisplayAlert("Winner", Items[winnerIndex].Title, "Remove this item", "Close");
+
+                if (removeItem)
+                {
+                    Items.RemoveAt(winnerIndex);
+                    wheel.Invalidate();
+                }
+
+                wheel.Rotation = wheelSpin.currentAngle;
+                isSpinning = false;
+            }
+            else if (Items.Count() <= 0)
+            {
+                await page.DisplayAlert("Alert", "Please add items to the wheel in order to spin it", "Close");
+            }
         }
 
-        private void AddItem()
+        private async void AddItem()
         {
-            Items.Add(new Item { Title = EntryText });
-            EntryText = string.Empty;
-            WheelDrawable = new WheelDrawable(Items);
+            if (!string.IsNullOrWhiteSpace(EntryText))
+            {
+                Items.Add(new Item { Title = EntryText });
+                EntryText = string.Empty;
+                WheelDrawable = new WheelDrawable(Items);
+            }
+            else
+            {
+                await page.DisplayAlert("Alert", "An item cannot be empty. Please add at least 1 non-whitespace character", "Okay");
+            }
         }
 
         private void RemoveItem(Item item)

@@ -57,6 +57,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Icons\arrow.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Include="Resources\Icons\arrow.svg" />
 	  <MauiImage Include="Resources\Icons\minus.svg" />
 	  <MauiImage Include="Resources\Icons\plus.svg" />
 	</ItemGroup>

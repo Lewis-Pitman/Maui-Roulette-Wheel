@@ -6,7 +6,7 @@
         public MainPage()
         {
             InitializeComponent();
-            mainPageViewModel = new MainPageViewModel(Wheel);
+            mainPageViewModel = new MainPageViewModel(Wheel, this);
             BindingContext = mainPageViewModel;
         }
     }

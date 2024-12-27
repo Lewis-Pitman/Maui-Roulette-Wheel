@@ -188,11 +188,6 @@ namespace Spinning_Wheel
                         canvas.FillColor = Colors.DarkGray;
                         canvas.FillCircle(dirtyRect.Center.X, dirtyRect.Center.Y, wheelSize);
 
-                        //Text
-                        canvas.FontColor = Colors.White;
-                        canvas.FontSize = 30;
-                        canvas.DrawString("Add items using the box below", dirtyRect.Center.X, dirtyRect.Center.Y, HorizontalAlignment.Center);
-
                         //Border
                         canvas.StrokeColor = Colors.Gray;
                         canvas.StrokeSize = wheelSize / 10;

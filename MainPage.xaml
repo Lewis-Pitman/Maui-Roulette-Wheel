@@ -5,23 +5,16 @@
              Shell.NavBarIsVisible="False">
 
     <ScrollView>
-    <VerticalStackLayout Spacing="20">
-        
-        <Label
-            FontSize="Title"
-            HorizontalOptions="Center"
-            VerticalOptions="Center"
-            Text="{Binding ResultText}"
-            />
-        
-        <GraphicsView
+
+        <VerticalStackLayout Spacing="20">
+            <GraphicsView
             x:Name="Wheel"
             WidthRequest="750"
             HeightRequest="500"
-            Drawable="{Binding WheelDrawable}"
+            Drawable="{Binding WheelDrawable}"               
         />
-        
-        <Button
+
+            <Button
             x:Name="SpinButton"
             Text="Spin"
             WidthRequest="500"
@@ -30,9 +23,10 @@
             FontSize="Header"
             Padding="20"
             CornerRadius="10"
+                ZIndex="3"
             Command="{Binding SpinCommand}"
             />
-
+            
             <!--Entry field-->
             <Grid Grid.Row="0" ColumnSpacing="10" Padding="0">
                 <Grid.ColumnDefinitions>
@@ -73,12 +67,11 @@
                                         CommandParameter="{Binding .}" 
                                         />
                             </Grid>
-                            
+
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        
         </VerticalStackLayout>
     </ScrollView>
 
