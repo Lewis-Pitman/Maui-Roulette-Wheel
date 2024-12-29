@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Spinning_Wheel
+namespace Spinning_Wheel.Classes
 {
 
     internal class WheelDrawable : IDrawable
@@ -14,7 +14,7 @@ namespace Spinning_Wheel
         private float wheelSize = 200;
         private ObservableCollection<Item> items;
 
-        private Color[] colorList = { Colors.Green, Colors.Red, Colors.Yellow, Colors.Blue}; // --> Change to odd no. of colours to prevent 2 next to each other
+        private Color[] colorList = { Colors.Green, Colors.Red, Colors.Yellow, Colors.Blue }; // --> Change to odd no. of colours to prevent 2 next to each other
 
         public WheelDrawable(ObservableCollection<Item> _items)
         {
@@ -56,7 +56,7 @@ namespace Spinning_Wheel
                         //Text
                         canvas.FontColor = Colors.White;
                         canvas.FontSize = 30;
-                        canvas.DrawString(items[0].Title, dirtyRect.Center.X - (wheelSize / 2), dirtyRect.Center.Y, HorizontalAlignment.Center);
+                        canvas.DrawString(items[0].Title, dirtyRect.Center.X - wheelSize / 2, dirtyRect.Center.Y, HorizontalAlignment.Center);
 
                         //White centre
                         canvas.FillColor = Colors.White;
@@ -78,7 +78,7 @@ namespace Spinning_Wheel
                         //Text
                         canvas.FontColor = Colors.White;
                         canvas.FontSize = 30;
-                        canvas.DrawString(items[0].Title, dirtyRect.Center.X - (wheelSize / 2), dirtyRect.Center.Y, HorizontalAlignment.Center);
+                        canvas.DrawString(items[0].Title, dirtyRect.Center.X - wheelSize / 2, dirtyRect.Center.Y, HorizontalAlignment.Center);
 
                         //Sector 2
                         PathF rectPath = new PathF();
@@ -98,7 +98,7 @@ namespace Spinning_Wheel
                         //Text
                         canvas.FontColor = Colors.White;
                         canvas.FontSize = 30;
-                        canvas.DrawString(items[1].Title, dirtyRect.Center.X + (wheelSize / 2), dirtyRect.Center.Y, HorizontalAlignment.Center);
+                        canvas.DrawString(items[1].Title, dirtyRect.Center.X + wheelSize / 2, dirtyRect.Center.Y, HorizontalAlignment.Center);
 
                         //White centre
                         canvas.FillColor = Colors.White;
@@ -114,7 +114,7 @@ namespace Spinning_Wheel
                         //Exactly the same as an ordinary value, except the lines being drawn are extended further, to make
                         //sure they fill the entire circle
 
-                        for(int i = 0; i < 3; i++)
+                        for (int i = 0; i < 3; i++)
                         {
                             PathF path = new PathF();
 
@@ -153,8 +153,8 @@ namespace Spinning_Wheel
                                 float textAngle = anglePerSector * (i + 0.5f);
                                 //(The angle in the middle of the sector, e.g. for a 90 degree sector the middle would be 45 degrees)
 
-                                float textX = (float)(dirtyRect.Center.X + (wheelSize / 2) * Math.Cos(Math.PI * textAngle / 180.0));
-                                float textY = (float)(dirtyRect.Center.Y + (wheelSize / 2) * Math.Sin(Math.PI * textAngle / 180.0));
+                                float textX = (float)(dirtyRect.Center.X + wheelSize / 2 * Math.Cos(Math.PI * textAngle / 180.0));
+                                float textY = (float)(dirtyRect.Center.Y + wheelSize / 2 * Math.Sin(Math.PI * textAngle / 180.0));
                                 //Coordinates are the same as before, except half the length meaning they are in the centre
 
                                 canvas.SaveState();
@@ -167,7 +167,7 @@ namespace Spinning_Wheel
                                 canvas.DrawString(text, 0, 0, HorizontalAlignment.Center);
                                 canvas.RestoreState();
 
-                            colourCount = colourCount >= colorList.Length - 1 ? 0 : colourCount + 1;
+                                colourCount = colourCount >= colorList.Length - 1 ? 0 : colourCount + 1;
                             }
 
                             //White centre
@@ -178,7 +178,7 @@ namespace Spinning_Wheel
                             canvas.StrokeColor = Colors.Gray;
                             canvas.StrokeSize = wheelSize / 10;
                             canvas.DrawEllipse(dirtyRect.Center.X - wheelSize, dirtyRect.Center.Y - wheelSize, wheelSize * 2, wheelSize * 2);
-                            }
+                        }
 
                         break;
                     default:
@@ -237,8 +237,8 @@ namespace Spinning_Wheel
                         float textAngle = anglePerSector * (i + 0.5f);
                         //(The angle in the middle of the sector, e.g. for a 90 degree sector the middle would be 45 degrees)
 
-                        float textX = (float)(dirtyRect.Center.X + (wheelSize / 2) * Math.Cos(Math.PI * textAngle / 180.0));
-                        float textY = (float)(dirtyRect.Center.Y + (wheelSize / 2) * Math.Sin(Math.PI * textAngle / 180.0));
+                        float textX = (float)(dirtyRect.Center.X + wheelSize / 2 * Math.Cos(Math.PI * textAngle / 180.0));
+                        float textY = (float)(dirtyRect.Center.Y + wheelSize / 2 * Math.Sin(Math.PI * textAngle / 180.0));
                         //Coordinates are the same as before, except half the length meaning they are in the centre
 
                         canvas.SaveState();

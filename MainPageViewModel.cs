@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Spinning_Wheel.Classes;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -101,8 +102,12 @@ namespace Spinning_Wheel
 
                 await wheelSpin.SpinAsync();
 
-                int winnerIndex = (int)Math.Floor(wheel.Rotation) / ((int)360f / items.Count());
-                //Integer division of the current rotation by the angle per sector will return the winning item's index in Items[]
+                double normalizedRotation = (wheel.Rotation + 360) % 360; //Make sure rotation is within 0-360
+                double adjustedRotation = (normalizedRotation + 90) % 360; //By default the pointer would be pointing to the right, this adjusts it so it's above the wheel
+                double sectorSweep = 360.0 / items.Count(); //Angle per sector
+
+                int winnerIndex = (int)Math.Floor(adjustedRotation / sectorSweep);
+                winnerIndex = Items.Count - 1 - winnerIndex; //Elements in Items[] are indexed in reverse, this corrects the index
 
                 await Task.Delay(1000); //Delay one second
 
@@ -125,22 +130,29 @@ namespace Spinning_Wheel
 
         private async void AddItem()
         {
-            if (!string.IsNullOrWhiteSpace(EntryText))
+            if (!isSpinning)
             {
-                Items.Add(new Item { Title = EntryText });
-                EntryText = string.Empty;
-                WheelDrawable = new WheelDrawable(Items);
-            }
-            else
-            {
-                await page.DisplayAlert("Alert", "An item cannot be empty. Please add at least 1 non-whitespace character", "Okay");
+                if (!string.IsNullOrWhiteSpace(EntryText))
+                {
+                    Items.Add(new Item { Title = EntryText });
+                    EntryText = string.Empty;
+                    WheelDrawable = new WheelDrawable(Items);
+                    wheel.Rotation = 0;
+                }
+                else
+                {
+                    await page.DisplayAlert("Alert", "An item cannot be empty. Please add at least 1 non-whitespace character", "Okay");
+                }
             }
         }
 
         private void RemoveItem(Item item)
         {
-            Items.Remove(item);
-            WheelDrawable = new WheelDrawable(Items);
+            if (!isSpinning)
+            {
+                Items.Remove(item);
+                WheelDrawable = new WheelDrawable(Items);
+            }
         }
         #endregion
     }

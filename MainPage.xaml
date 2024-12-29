@@ -6,24 +6,25 @@
 
     <ScrollView>
 
-        <VerticalStackLayout Spacing="20">
+        <VerticalStackLayout Spacing="10" Padding="20">
+            
             <GraphicsView
             x:Name="Wheel"
             WidthRequest="750"
-            HeightRequest="500"
+            HeightRequest="400"
             Drawable="{Binding WheelDrawable}"               
         />
 
             <Button
             x:Name="SpinButton"
             Text="Spin"
-            WidthRequest="500"
-            HeightRequest="150"
+            MaximumWidthRequest="800"
+            HeightRequest="100"
             FontAttributes="Bold"
             FontSize="Header"
             Padding="20"
             CornerRadius="10"
-                ZIndex="3"
+            ZIndex="3"
             Command="{Binding SpinCommand}"
             />
             
@@ -40,7 +41,7 @@
                        Text="{Binding EntryText}"
                        />
                 
-                <Button Grid.Column="1" BackgroundColor="Green" ImageSource="plus.png" CornerRadius="10" Command="{Binding AddItemCommand}"/>
+                <Button Grid.Column="1" BackgroundColor="Green" ImageSource="plus.png" CornerRadius="10" MaximumHeightRequest="50" Command="{Binding AddItemCommand}"/>
             </Grid>
 
             <!--List of already made items-->
@@ -49,19 +50,19 @@
                     <DataTemplate>
                         <ViewCell>
 
-                            <Grid Grid.Row="0" ColumnSpacing="10" Padding="0" MinimumHeightRequest="20">
+                            <Grid Grid.Row="0" ColumnSpacing="10" Padding="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="3*" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" Text="{Binding Title}" />
+                                <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" Text="{Binding Title}"/>
                                 <Button Grid.Row="0"
                                         Grid.Column="1" 
                                         BackgroundColor="Red" 
                                         ImageSource="minus.png" 
                                         HorizontalOptions="FillAndExpand"
-                                        VerticalOptions="FillAndExpand"
+                                        MaximumHeightRequest="40"
                                         CornerRadius="10" 
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RemoveItemCommand}" 
                                         CommandParameter="{Binding .}" 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Spinning_Wheel
+namespace Spinning_Wheel.Classes
 {
     internal class Item
     {
