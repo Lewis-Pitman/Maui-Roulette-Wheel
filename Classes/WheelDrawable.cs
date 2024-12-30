@@ -27,11 +27,7 @@ namespace Spinning_Wheel.Classes
         {
 
             #region Clip path
-            if (OperatingSystem.IsWindows())
-            {
-                //Add a message..?
-            }
-            else
+            if (!OperatingSystem.IsWindows())
             {
                 PathF clipPath = new PathF();
                 clipPath.AppendCircle(dirtyRect.Center.X, dirtyRect.Center.Y, wheelSize);
@@ -66,12 +62,12 @@ namespace Spinning_Wheel.Classes
                             text += "...";
                         }
 
-                        canvas.FontSize = 30 - text.Length;
-                        canvas.DrawString(text, dirtyRect.Center.X - (wheelSize / 5), dirtyRect.Center.Y, HorizontalAlignment.Center);
+                        canvas.FontSize = 35 - text.Length;
+                        canvas.DrawString(text, dirtyRect.Center.X - (wheelSize / 5), dirtyRect.Center.Y, HorizontalAlignment.Right);
 
                         //White centre
                         canvas.FillColor = Colors.White;
-                        canvas.FillCircle(dirtyRect.Center.X, dirtyRect.Center.Y, wheelSize / 4);
+                        canvas.FillCircle(dirtyRect.Center.X, dirtyRect.Center.Y, wheelSize / 6);
 
                         //Border
                         canvas.StrokeColor = Colors.Gray;
@@ -79,8 +75,8 @@ namespace Spinning_Wheel.Classes
                         canvas.DrawEllipse(dirtyRect.Center.X - wheelSize, dirtyRect.Center.Y - wheelSize, wheelSize * 2, wheelSize * 2);
                         break;
                     case 2:
-                        //Essentially having the circle background representing one sector and a clipped rectangle representing the other
-                        //I have found that trying to draw arcs with Maui graphics can be tricky sometimes
+                        //This works by having the circle background representing one sector and a clipped rectangle representing the other
+                        //I have found that trying to draw arcs with Maui graphics can be tricky. This is much easier
 
                         //Sector 1
                         canvas.FillColor = colorList[0];
@@ -96,8 +92,8 @@ namespace Spinning_Wheel.Classes
                             text += "...";
                         }
 
-                        canvas.FontSize = 30 - text.Length;
-                        canvas.DrawString(text, wheelSize, dirtyRect.Center.Y, HorizontalAlignment.Center);
+                        canvas.FontSize = 35 - text.Length;
+                        canvas.DrawString(text, wheelSize, dirtyRect.Center.Y, HorizontalAlignment.Left);
 
                         //Sector 2
                         PathF rectPath = new PathF();
@@ -124,12 +120,12 @@ namespace Spinning_Wheel.Classes
                             text += "...";
                         }
 
-                        canvas.FontSize = 30 - text.Length;
+                        canvas.FontSize = 35 - text.Length;
                         canvas.DrawString(text, dirtyRect.Center.X + (wheelSize - wheelSize / 10), dirtyRect.Center.Y, HorizontalAlignment.Right);
 
                         //White centre
                         canvas.FillColor = Colors.White;
-                        canvas.FillCircle(dirtyRect.Center.X, dirtyRect.Center.Y, wheelSize / 4);
+                        canvas.FillCircle(dirtyRect.Center.X, dirtyRect.Center.Y, wheelSize / 6);
 
                         //Border
                         canvas.StrokeColor = Colors.Gray;
@@ -203,7 +199,7 @@ namespace Spinning_Wheel.Classes
 
                             //White centre
                             canvas.FillColor = Colors.White;
-                            canvas.FillCircle(dirtyRect.Center.X, dirtyRect.Center.Y, wheelSize / 4);
+                            canvas.FillCircle(dirtyRect.Center.X, dirtyRect.Center.Y, wheelSize / 6);
 
                             //Border
                             canvas.StrokeColor = Colors.Gray;
@@ -284,10 +280,19 @@ namespace Spinning_Wheel.Classes
                         canvas.Rotate(textAngle);
 
                         canvas.FontColor = textColorList[colourCount];
-                        canvas.FontSize = anglePerSector > 36 ? (anglePerSector / 2.5f) - (text.Length / 4) : anglePerSector - (text.Length / 2);
+                        canvas.FontSize = anglePerSector > 30 ? (anglePerSector / 2.5f) - (text.Length / 6) : anglePerSector - (text.Length / 1.5f);
                         //An effort to keep the text readable no matter how many sectors there are
 
-                        canvas.DrawString(text, 0, 0, HorizontalAlignment.Right);
+                        if(anglePerSector == 90)
+                        {
+                            canvas.DrawString(text, 0, 0, HorizontalAlignment.Center);
+                            //Edge case
+                        }
+                        else
+                        {
+                            canvas.DrawString(text, 0, 0, HorizontalAlignment.Right);
+                        }
+
                         canvas.RestoreState();
                     }
 
@@ -296,7 +301,7 @@ namespace Spinning_Wheel.Classes
 
                 //White centre
                 canvas.FillColor = Colors.White;
-                canvas.FillCircle(dirtyRect.Center.X, dirtyRect.Center.Y, wheelSize / 4);
+                canvas.FillCircle(dirtyRect.Center.X, dirtyRect.Center.Y, wheelSize / 6);
 
                 //Border
                 canvas.StrokeColor = Colors.Gray;
