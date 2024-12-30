@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Plugin.Maui.Audio;
+using Spinning_Wheel.Classes;
 
 namespace Spinning_Wheel
 {
@@ -14,6 +16,9 @@ namespace Spinning_Wheel
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            builder.Services.AddSingleton(AudioManager.Current);
+            builder.Services.AddTransient<WheelSpin>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

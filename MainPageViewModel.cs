@@ -1,4 +1,5 @@
-﻿using Spinning_Wheel.Classes;
+﻿using Plugin.Maui.Audio;
+using Spinning_Wheel.Classes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -88,8 +89,9 @@ namespace Spinning_Wheel
             //Variables
             wheel = _wheel;
             page = _page;
-            wheelSpin = new(wheel);
+            wheelSpin = new(wheel, 0);
             cancellationTokenSource = new CancellationTokenSource();
+
         }
         #endregion
 
@@ -98,7 +100,9 @@ namespace Spinning_Wheel
         {
             if (Items.Count() > 0 && !isSpinning)
             {
+                wheelSpin = new(wheel, Items.Count());
                 isSpinning = true;
+                var audioPlayer = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("winner.wav"));
 
                 await wheelSpin.SpinAsync();
 
@@ -111,6 +115,7 @@ namespace Spinning_Wheel
 
                 await Task.Delay(1000); //Delay one second
 
+                audioPlayer.Play();
                 bool removeItem = await page.DisplayAlert("Winner", Items[winnerIndex].Title, "Remove this item", "Close");
 
                 if (removeItem)
@@ -121,6 +126,7 @@ namespace Spinning_Wheel
 
                 wheel.Rotation = wheelSpin.currentAngle;
                 isSpinning = false;
+                audioPlayer.Dispose();
             }
             else if (Items.Count() <= 0)
             {

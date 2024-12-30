@@ -6,13 +6,20 @@
 
     <ScrollView>
 
-        <VerticalStackLayout Spacing="10" Padding="20">
-            
+        <VerticalStackLayout Spacing="10" Padding="20" Margin="0, 10">
+
+            <Frame MaximumHeightRequest="150" MaximumWidthRequest="100" BackgroundColor="Transparent" BorderColor="Transparent" ZIndex="2" Margin="0, -60">
+                <Frame.Content>
+                    <Image Source="arrow.png" Aspect="AspectFill" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+                </Frame.Content>
+            </Frame>
+
             <GraphicsView
             x:Name="Wheel"
             WidthRequest="750"
             HeightRequest="400"
-            Drawable="{Binding WheelDrawable}"               
+            Drawable="{Binding WheelDrawable}"          
+                ZIndex="1"
         />
 
             <Button
